@@ -7,21 +7,27 @@ from stellar_burgers_api import MethodsUser
 
 @allure.step('Создаем данные для пользователя, передаем их, после теста удаляем его.')
 @pytest.fixture(scope='function')
-def generate_user_data_and_delete():
+def create_user():
     data_payload = GenerateRandomUser.generate_random_user_data()
-    yield data_payload
+    response = MethodsUser.create_user(data_payload)
+    yield data_payload, response
 
+
+@allure.step('Удаляем пользователя после теста.')
+@pytest.fixture(scope='function')
+def delete_user(create_user):
+    data_payload = create_user[0]
+    yield
     login = MethodsUser.login_user(data_payload)
     token_user = login.json()['accessToken']
     MethodsUser.delete_user(token_user)
 
 
-@allure.step('Регистрируем пользователя, логинимся, после теста удаляем его.')
+@allure.step('Создаем пользователя, логинимся и удаляем после теста.')
 @pytest.fixture(scope='function')
-def register_user_login_and_delete():
-    data_payload = GenerateRandomUser.generate_random_user_data()
-    login = MethodsUser.create_and_login_user(data_payload)
+def login_user(create_user):
+    data_payload = create_user[0]
+    login = MethodsUser.login_user(data_payload)
     token_user = login.json()['accessToken']
     yield data_payload, login, token_user
-
     MethodsUser.delete_user(token_user)

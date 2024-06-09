@@ -12,13 +12,6 @@ class MethodsUser:
         return response
 
     @staticmethod
-    @allure.step("Создание и Логин пользователя в системе")
-    def create_and_login_user(payload):
-        requests.post(Urls.URL_MAIN + Urls.URL_CREATE_USER, data=payload)
-        response = requests.post(Urls.URL_MAIN + Urls.URL_LOGIN_USER, data=payload)
-        return response
-
-    @staticmethod
     @allure.step("Логин пользователя в системе")
     def login_user(payload):
         response = requests.post(Urls.URL_MAIN + Urls.URL_LOGIN_USER, data=payload)

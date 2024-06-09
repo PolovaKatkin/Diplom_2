@@ -27,7 +27,7 @@
 
 **Запуск автотестов и создание отчета о тестировании в Allure**
 
-> `pytest--alluredir=allure_results`
+> `pytest --alluredir=allure_results`
 
 **Генерация отчета в html страницу**
 
